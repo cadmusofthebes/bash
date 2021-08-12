@@ -6,16 +6,6 @@
 " Neovim: $HOME\AppData\Local\nvim\init.vim
 
 
-
-" ========= Update Info =========
-" Last Update: 08/11/21
-"   - Added vim-plug detection and auto-install of plugins
-"   - Added disabling of auto-indent when pasting test in insert mode
-"   - General reorganization of settings
-"   - Added new ":set list" settings
-
-
-
 " ========= General Settings ==========
 " Use Vim settings, rather than Vi settings (This must be first!)
 set nocompatible
@@ -80,7 +70,6 @@ set encoding=utf-8
 set fileencoding=utf-8
 
 
-
 " ========= Colorscheme and Font Settings ==========
 try
     colorscheme atom
@@ -98,7 +87,6 @@ if has('gui_running')
 endif
 
 
-
 " ========= Session Settings ==========
 if has('win32')
     map <F7> :mksession! $HOME\sessions\main.vim <cr>             " Quick write session
@@ -111,7 +99,6 @@ elseif has ('unix')
     " autocmd! VimLeave * mksession! ~/vim/sessions/main.vim      " Automatically save the session when leaving vim
     " autocmd! VimEnter * source ~/vim/sessions/main.vim          " Automatically load the session when entering vim
 endif
-
 
 
 " ========= Windows Style Mappings =========
@@ -140,7 +127,6 @@ if has("gui")
 endif
 
 
-
 " ========= Tab Navigation Mappings =========
 " Have to do this by uname since modern MacOS responds as unix
 " Source: https://vi.stackexchange.com/questions/2572/detect-os-in-vimscript
@@ -154,7 +140,6 @@ elseif has('win32') || has('unix')
     nnoremap <silent> <A-Left> :tabm -1<CR>
     nnoremap <silent> <A-Right> :tabm +1<CR>
 endif
-
 
 
 " ========= Plugins =========
@@ -225,4 +210,3 @@ nmap <leader>nt :NERDTree<cr>
 
 " fzf (; in visual mode)
 map ; :Files<cr>
-
