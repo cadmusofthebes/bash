@@ -12,6 +12,7 @@
 "   - Added vim-plug detection and auto-install of plugins
 "   - Added disabling of auto-indent when pasting test in insert mode
 "   - General reorganization of settings
+"   - Added new ":set list" settings
 
 
 
@@ -39,17 +40,26 @@ set noswapfile
 set nowritebackup
 set nobackup
 
+" Set whitespace characters and mapping for ":set list"
+" Source: https://stackoverflow.com/questions/1675688/make-vim-show-all-white-spaces-as-a-character
+:set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<,space:␣
+noremap <F5> :set list!<CR>
+inoremap <F5> <C-o>:set list!<CR>
+cnoremap <F5> <C-c>:set list!<CR>
+
 " Set tabs to 4 spaces
 " Source: https://www.youtube.com/watch?v=SsoOG6ZeyUI
 set ts=4
-set softtabstop=4 shiftwidth=4 expandtab
-
+set softtabstop=4 
+set shiftwidth=4
+set expandtab   
+     
 " Set intendtation settings
 set autoindent
 set smartindent
 set breakindent
 set pastetoggle=<F2>
-
+    
 " Disable autoindent when pasting text
 " Source: https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
 let &t_SI .= "\<Esc>[?2004h"
@@ -128,12 +138,6 @@ if has("gui")
   inoremap <M-Space> <C-O>:simalt ~<CR>
   cnoremap <M-Space> <C-C>:simalt ~<CR>
 endif
-
-" CTRL-F4 is close window
-noremap <C-F4> <C-W>c
-inoremap <C-F4> <C-O><C-W>c
-cnoremap <C-F4> <C-C><C-W>c
-onoremap <C-F4> <C-C><C-W>c
 
 
 
