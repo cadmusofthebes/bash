@@ -69,26 +69,16 @@ set fileformat=unix
 set encoding=utf-8
 set fileencoding=utf-8
 
-
-" ========= Colorscheme and Font Settings ==========
-try
-    colorscheme atom
-catch /^Vim\%((\a\+)\)\=:E185/
-    echo "[!] Colorscheme missing, using default"
-    colorscheme default
-endtry
-
-if has('gui_running')
-    if has('gui_win32')
-    	set guifont=Consolas:h10:cANSI
-    else
-        set guifont=Consolas\ 10
-    endif
-endif
+" Change HOME directory
+" Added due to me wanting a different home directory on some computers
+"if has ('win32')
+    " let $HOME = "C:\\users\\cadmus"
+"elseif has ('unix')
+    " let $HOME = "/home/cadmus"
 
 
 " ========= Session Settings ==========
-if has('win32')
+if has ('win32')
     map <F7> :mksession! $HOME\sessions\main.vim <cr>             " Quick write session
     map <F10> :source $HOME\sessions\main.vim <cr>                " Quick load session
     " autocmd! VimLeave * mksession! $HOME\sessions\main.vim      " Automatically save the session when leaving vim
@@ -110,10 +100,6 @@ behave mswin
 vnoremap <BS> d
 
 " Setup virtualedit for pasting in Insert/Visual mode
-"exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
-"exe 'vnoremap <script> <C-V>' paste#paste_cmd['v']
-"imap <S-Insert> <C-V>
-"vmap <S-Insert> <C-V>
 vmap <C-c> "+y
 vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p
@@ -147,8 +133,8 @@ endif
 " Source: https://gist.github.com/miguelgrinberg/527bb5a400791f89b3c4da4bd61222e4
 let need_to_install_plugins = 0
 if has('win32')
-	if empty(glob('C:\Users\Cadmus\vimfiles\autoload\plug.vim'))
-		silent !curl -fLo C:/Users/Cadmus/vimfiles/autoload/plug.vim --create-dirs
+	if empty(glob('$HOME\vimfiles\autoload\plug.vim'))
+		silent !curl -fLo $HOME/vimfiles/autoload/plug.vim --create-dirs
 			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     	let need_to_install_plugins = 1
 	endif
@@ -210,3 +196,23 @@ nmap <leader>nt :NERDTree<cr>
 
 " fzf (; in visual mode)
 map ; :Files<cr>
+
+
+" ========= Colorscheme and Font Settings ==========
+" This needs to be below the plugins as onedark is a plugin
+try
+    colorscheme onedark
+catch /^Vim\%((\a\+)\)\=:E185/
+    echo "[!] Colorscheme missing, using default"
+    colorscheme default
+endtry
+
+if has ('gui_running')
+    if has ('gui_win32')
+    	set guifont=Consolas:h10:cANSI
+    elseif has ('gui_macvim')
+        set guifont=Monaco:h11
+    else
+        set guifont=Consolas\ 10
+    endif
+endif
