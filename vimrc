@@ -69,6 +69,11 @@ set fileformat=unix
 set encoding=utf-8
 set fileencoding=utf-8
 
+" Change working directory to current file's directory
+" Source:
+" https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
+autocmd BufEnter * lcd %:p:h
+
 " Change HOME directory
 " Added due to me wanting a different home directory on some computers
 "if has ('win32')
