@@ -1,9 +1,6 @@
 #!/bin/bash
 
-###############################
 # Validate a group was given
-###############################
-
 if [[ $# -eq 0 ]] ; then
     echo "[!] ERROR: Missing group and/or domain parameter"
     echo "[*] Usage: $0 <group> <domain>"
@@ -11,10 +8,7 @@ if [[ $# -eq 0 ]] ; then
 fi
 
 
-#################################
 # Run dscl against the given group
-#################################
-
 groupName=$1
 domain=$2
 

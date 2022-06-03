@@ -7,8 +7,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+
 # Get current smartcard setting
 currentStatus=$(defaults read /Library/Preferences/com.apple.security.smartcard enforceSmartCard) 
+
 
 # Check current status of smartcard authentication
 if [ $currentStatus = 1 ]; then
@@ -17,8 +19,10 @@ elif [ $currentStatus = 0 ]; then
     echo "[*] Smartcard is currently Disabled"
 fi
 
+
 # Give user a chance to exit
 read -p "[*] Hit <enter> to change status or CTRL+C to exit"
+
 
 # Change if the user chooses
 if [ $currentStatus = 1 ]; then
