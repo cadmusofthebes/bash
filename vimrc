@@ -134,23 +134,6 @@ endif
 
 
 " ========= Plugins =========
-" Check to see if vim-plug is installed
-" Source: https://gist.github.com/miguelgrinberg/527bb5a400791f89b3c4da4bd61222e4
-let need_to_install_plugins = 0
-if has('win32')
-	if empty(glob('$HOME\vimfiles\autoload\plug.vim'))
-		silent !curl -fLo $HOME/vimfiles/autoload/plug.vim --create-dirs
-			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    	let need_to_install_plugins = 1
-	endif
-elseif has('unix')
-	if empty(glob('~/.vim/autoload/plug.vim'))
-		silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-		let need_to_install_plugins = 1
-	endif
-endif
-
 " Set plugin directory based on Windows or Linux/MacOS
 " TODO: Need to turn this into an array and call it in a loop instead of maintaining two plugin lists
 if has('win32')
@@ -179,15 +162,6 @@ elseif has('unix')
     Plug 'scrooloose/nerdtree'
     Plug 'ap/vim-buftabline'
     call plug#end()
-endif
-
-" Install plugins automatically if vim-plug was missing
-" Source: https://github.com/davidmytton/dotfiles/blob/main/dot_vimrc
-if need_to_install_plugins == 1
-    echo "[*] Installing plugins..."
-    !silent PlugInstall
-    echo "[*] Done!"
-    q
 endif
 
 
