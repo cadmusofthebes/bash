@@ -64,6 +64,9 @@ if has('mouse')
   set mouse=a
 endif
 
+" Fix copy/paste in Tmux
+set clipboard=unnamedplus
+
 " Set file formats
 set fileformat=unix
 set encoding=utf-8
