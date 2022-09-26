@@ -52,8 +52,9 @@ set pastetoggle=<F2>
     
 " Disable autoindent when pasting text
 " Source: https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
+" NOTE: Enabling these options will break vim from within tmux
+" let &t_SI .= "\<Esc>[?2004h"
+" let &t_EI .= "\<Esc>[?2004l"
 
 " Prevent newlines from breaking in middle of a word
 set formatoptions=l
