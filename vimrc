@@ -52,9 +52,8 @@ set pastetoggle=<F2>
     
 " Disable autoindent when pasting text
 " Source: https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
-" NOTE: Enabling these options will break vim from within tmux
-" let &t_SI .= "\<Esc>[?2004h"
-" let &t_EI .= "\<Esc>[?2004l"
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
 
 " Prevent newlines from breaking in middle of a word
 set formatoptions=l
@@ -65,16 +64,14 @@ if has('mouse')
   set mouse=a
 endif
 
-" Fix copy/paste in Tmux
-set clipboard=unnamedplus
-
 " Set file formats
 set fileformat=unix
 set encoding=utf-8
 set fileencoding=utf-8
 
 " Change working directory to current file's directory
-" Source: https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
+" Source:
+" https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
 autocmd BufEnter * lcd %:p:h
 
 " Change HOME directory
@@ -87,15 +84,23 @@ autocmd BufEnter * lcd %:p:h
 
 " ========= Session Settings ==========
 if has ('win32')
+    " Notes
     map <F7> :mksession! $HOME\sessions\main.vim <cr>             " Quick write session
-    map <F10> :source $HOME\sessions\main.vim <cr>                " Quick load session
+    map <F9> :source $HOME\sessions\main.vim <cr>                " Quick load session
     " autocmd! VimLeave * mksession! $HOME\sessions\main.vim      " Automatically save the session when leaving vim
     " autocmd! VimEnter * source $HOME\sessions\main.vim          " Automatically load the session when entering vim
+    " Code
+    map <F8> :mksession! $HOME\sessions\code.vim <cr>             " Quick write session
+    map <F10> :source $HOME\sessions\code.vim <cr>                " Quick load session
 elseif has ('unix')
+    " Notes
     map <F7> :mksession! ~/vim/sessions/main.vim <cr>             " Quick write session
-    map <F10> :source ~/vim/sessions/main.vim <cr>                " Quick load session
+    map <F9> :source ~/vim/sessions/main.vim <cr>                " Quick load session
     " autocmd! VimLeave * mksession! ~/vim/sessions/main.vim      " Automatically save the session when leaving vim
     " autocmd! VimEnter * source ~/vim/sessions/main.vim          " Automatically load the session when entering vim
+    " Code
+    map <F8> :mksession! ~/vim/sessions/code.vim <cr>             " Quick write session
+    map <F10> :source ~/vim/sessions/code.vim <cr>                " Quick load session
 endif
 
 
@@ -137,21 +142,25 @@ endif
 
 
 " ========= Plugins =========
-" Set plugin directory based on Windows or Linux/MacOS
-" TODO: Need to turn this into an array and call it in a loop instead of maintaining two plugin lists
-
-" Install vim-plug if not found
-" Source: https://github.com/junegunn/vim-plug/wiki/tips
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" Check to see if vim-plug is installed
+" Source: https://gist.github.com/miguelgrinberg/527bb5a400791f89b3c4da4bd61222e4
+let need_to_install_plugins = 0
+if has('win32')
+	if empty(glob('$HOME\vimfiles\autoload\plug.vim'))
+		silent !curl -fLo $HOME/vimfiles/autoload/plug.vim --create-dirs
+			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    	let need_to_install_plugins = 1
+	endif
+elseif has('unix')
+	if empty(glob('~/.vim/autoload/plug.vim'))
+		silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+			\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+		let need_to_install_plugins = 1
+	endif
 endif
 
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
+" Set plugin directory based on Windows or Linux/MacOS
+" TODO: Need to turn this into an array and call it in a loop instead of maintaining two plugin lists
 if has('win32')
     call plug#begin('~\AppData\Local\vim')
     Plug 'joshdick/onedark.vim'
@@ -180,6 +189,15 @@ elseif has('unix')
     call plug#end()
 endif
 
+" Install plugins automatically if vim-plug was missing
+" Source: https://github.com/davidmytton/dotfiles/blob/main/dot_vimrc
+if need_to_install_plugins == 1
+    echo "[*] Installing plugins..."
+    !silent PlugInstall
+    echo "[*] Done!"
+    q
+endif
+
 
 " ========= Plugin Mappings ==========
 " Set PATH to git for windows fzf embedded usage on vim
@@ -188,6 +206,15 @@ endif
 " NERDtree (,nt in visual mode)
 let mapleader = ","
 nmap <leader>nt :NERDTree<cr>
+
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " fzf (; in visual mode)
 map ; :Files<cr>
