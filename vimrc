@@ -206,19 +206,17 @@ endif
 " Set PATH to git for windows fzf embedded usage on vim
 " let $PATH = "C:\\Program Files\\Git\\usr\\bin;" . $PATH
 
-" NERDtree (,nt in visual mode)
-let mapleader = ","
-nmap <leader>nt :NERDTree<cr>
+" Open and close NERDTree with CTRL + N
+map <silent> <C-n> :NERDTreeToggle<CR>
 
 " Start NERDTree and put the cursor back in the other window.
 autocmd VimEnter * NERDTree ~/Documents | wincmd p
 
 " Close the tab if NERDTree is the only window remaining in it.
-"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"autocmd BufEnter * if tabpagenr('$') > 1 && !len(filter(tabpagebuflist(), 'getbufvar(v:val,"&ft") != "nerdtree"')) | tabclose | endif
 
 " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+"autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " Make nerdtree open files in new tabs with enter
 let NERDTreeMapOpenInTab='<ENTER>'
